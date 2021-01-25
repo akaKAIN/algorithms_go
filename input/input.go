@@ -14,7 +14,7 @@ func UserString(in io.Reader) string {
 	return scanner.Text()
 }
 
-func UserInt(in io.Reader) (int, error)  {
+func UserInt(in io.Reader) (int, error) {
 	strNum := UserString(in)
 	num, err := strconv.Atoi(strNum)
 	if err != nil {
