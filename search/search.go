@@ -9,7 +9,7 @@ func stepCalc(in int) int {
 
 func Binary(sorterArr []byte, value byte) int {
 	var (
-		idx = len(sorterArr) / 2
+		idx  = len(sorterArr) / 2
 		step = stepCalc(idx)
 	)
 

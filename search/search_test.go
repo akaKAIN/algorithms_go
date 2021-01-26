@@ -25,3 +25,20 @@ func TestBinary(t *testing.T) {
 		assert.Equal(t, tc.out, result, tc.name)
 	}
 }
+
+func TestStepCalc(t *testing.T) {
+	tests := []struct {
+		in  int
+		out int
+	}{
+		{in: 3, out: 1},
+		{in: 1, out: 1},
+		{in: 4, out: 2},
+		{in: 10, out: 5},
+		{in: 7, out: 3},
+	}
+	for _, tc := range tests {
+		result := stepCalc(tc.in)
+		assert.Equal(t, tc.out, result)
+	}
+}
