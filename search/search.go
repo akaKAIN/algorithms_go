@@ -1,26 +1,32 @@
 package search
 
-import "fmt"
+func stepCalc(in int) int {
+	if in == 1 {
+		return 1
+	}
+	return in / 2
+}
 
 func Binary(sorterArr []byte, value byte) int {
-	var idx = len(sorterArr)
+	var (
+		idx = len(sorterArr) / 2
+		step = stepCalc(idx)
+	)
+
 	for {
-		if idx%2 == 0 {
-			idx /= 2
-		} else {
-			idx = (idx - 1) / 2
+		step = stepCalc(step)
+		if sorterArr[idx] == value {
+			return idx
+		} else if sorterArr[idx] > value {
+			idx -= step
+		} else if sorterArr[idx] < value {
+			idx += step
 		}
 		if sorterArr[idx] == value {
 			return idx
-		} else if sorterArr[idx] < value {
-			sorterArr = sorterArr[idx:]
-		} else if sorterArr[idx] > value {
-			sorterArr = sorterArr[:idx]
-
 		}
 		if idx == 0 {
 			return -1
 		}
-		fmt.Println(idx, string(sorterArr))
 	}
 }
