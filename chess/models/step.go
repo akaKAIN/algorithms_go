@@ -34,3 +34,10 @@ func (s *Step) DeleteLastPosition() bool {
 	}
 	return false
 }
+
+func InitStep(position Coordinate, body map[Coordinate]bool) *Step {
+	step := new(Step)
+	step.Position = position
+	step.CalcPossiblePositions(body)
+	return step
+}

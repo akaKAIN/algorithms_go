@@ -15,10 +15,10 @@ type SizeBoard = Coordinate
 type Board struct {
 	Body  map[Coordinate]bool
 	Size  SizeBoard
-	Steps []Step
+	Steps []*Step
 }
 
-// Инициализация структуры доски.
+// Инициализация структуры игрового поля.
 func InitBoard(row, col int, basePosition Coordinate) *Board {
 	if row >= basePosition.Row || col >= basePosition.Col {
 		board := new(Board)
@@ -30,10 +30,9 @@ func InitBoard(row, col int, basePosition Coordinate) *Board {
 				board.Body[coordinate] = false
 			}
 		}
-		wasAdded := board.AddStep(basePosition)
-		if !wasAdded {
-			log.Println("Some kind of shit is happened in first step")
-		}
+		firstStep := InitStep(basePosition, board.Body)
+		board.AddStep(firstStep)
+
 		return board
 	} else {
 		log.Println("Wrong figure position", basePosition)
@@ -43,28 +42,44 @@ func InitBoard(row, col int, basePosition Coordinate) *Board {
 
 func (b *Board) GetNextStep() *Step {
 	lastStep := b.Steps[len(b.Steps)-1]
-	nextPosition := lastStep.PossiblePositions[len(lastStep.PossiblePositions)-1]
-	if isMarked, ok := b.Body[nextPosition]; ok &&
-		!isMarked &&
-		len(lastStep.PossiblePositions) != 0 {
-		newStep := new(Step)
-		newStep.Position = nextPosition
-		newStep.CalcPossiblePositions(b.Body)
-		return newStep
+	if len(lastStep.PossiblePositions) != 0 {
+		nextPosition := lastStep.PossiblePositions[len(lastStep.PossiblePositions)-1]
+		if isMarked, ok := b.Body[nextPosition]; ok &&
+			!isMarked &&
+			len(lastStep.PossiblePositions) != 0 {
+			return InitStep(nextPosition, b.Body)
+		}
 	}
 	return nil
 }
 
-func (b *Board) AddStep(step Step)  {
+func (b *Board) AddStep(step *Step) {
 	b.Steps = append(b.Steps, step)
+	b.Body[step.Position] = true
+}
+
+func (b *Board) RevertStep() {
+	if len(b.Steps) > 1 {
+		revertPosition := b.Steps[len(b.Steps)-1].Position
+		b.Steps = b.Steps[:len(b.Steps)-1]
+		b.Body[revertPosition] = false
+		b.Steps[len(b.Steps)-1].DeleteLastPosition()
+	} else if len(b.Steps) == 1 {
+		if len(b.Steps[0].PossiblePositions) != 0 {
+			b.Steps[0].DeleteLastPosition()
+		} else {
+
+			log.Fatal("No steps: ", b)
+		}
+	}
 }
 
 func (b *Board) Main() {
 	for len(b.Steps) < b.Size.Row*b.Size.Col {
 		if nextStep := b.GetNextStep(); nextStep != nil {
-			b.AddStep(*nextStep)
-		} else  {
-
+			b.AddStep(nextStep)
+		} else {
+			b.RevertStep()
 		}
 	}
 }
