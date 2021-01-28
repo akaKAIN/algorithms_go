@@ -39,3 +39,10 @@ func (k *Knight) calcPossibleDirections() {
 		{Row: k.CurrentPosition.Row - 1, Col: k.CurrentPosition.Col - 2},
 	}
 }
+
+func InitKnight(coordinate Coordinate) *Knight {
+	knight := new(Knight)
+	knight.CurrentPosition = coordinate
+	knight.calcPossibleDirections()
+	return knight
+}

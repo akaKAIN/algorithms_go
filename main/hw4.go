@@ -1,7 +1,11 @@
 package main
 
-import "github.com/akaKAIN/algorithms_go/chess"
+import (
+	"fmt"
+	"github.com/akaKAIN/algorithms_go/chess/models"
+)
 
 func main() {
-	chess.Horse(5, 5)
+	board := models.InitBoard(4, 4, [2]int{1, 1})
+	fmt.Println(board)
 }
