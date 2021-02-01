@@ -15,7 +15,8 @@ func main() {
 	//Task1()
 	//Task2()
 	//Task3()
-	Task4()
+	//Task4()
+	Task6()
 }
 
 // Реализовать перевод издесятичной в двоичную систему
@@ -62,4 +63,19 @@ func Task4() {
 		item := copyLinkedList.InitLinkedItem([]byte{byte(i)}, lastLink)
 		lastLink = item
 	}
+}
+
+// **Реализовать алгоритм перевода из инфиксной записи арифметического выражения в постфиксную.
+func Task5() {}
+
+// *Реализовать очередь.
+func Task6() {
+	queue := mysort.Queue{Body: make([]byte, 0, 0)}
+	queue.Put('A')
+	queue.Put('B')
+	queue.Put('C')
+	queue.Put('D')
+	fmt.Printf("%q\n", queue)
+	queue.Pop()
+	fmt.Printf("%q\n", queue)
 }

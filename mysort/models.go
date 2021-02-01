@@ -73,3 +73,20 @@ func (b *BracketChecker) IsValidBracket(bracket byte) bool {
 	return true
 
 }
+
+type Queue struct {
+	Body []byte
+}
+
+func (q *Queue) Pop() byte {
+	limit := len(q.Body) - 1
+	last := q.Body[limit]
+	q.Body = q.Body[:limit]
+	return last
+}
+
+func (q *Queue) Put(data byte) {
+	body := make([]byte, len(q.Body), len(q.Body)+1)
+	copy(body, q.Body)
+	q.Body = append([]byte{data}, body...)
+}
