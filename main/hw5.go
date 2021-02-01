@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	copyLinkedList "github.com/akaKAIN/algorithms_go/copy"
 	"github.com/akaKAIN/algorithms_go/input"
 	"github.com/akaKAIN/algorithms_go/mymath"
 	"github.com/akaKAIN/algorithms_go/mysort"
@@ -13,7 +14,7 @@ import (
 func main() {
 	//Task1()
 	//Task2()
-	Task3()
+	//Task3()
 	Task4()
 }
 
@@ -56,5 +57,9 @@ func Task3() {
 // Создать функцию, копирующую односвязный список (то есть создает в памяти копию
 // односвязного списка, не удаляя первый список).
 func Task4() {
-
+	var lastLink *copyLinkedList.LinkedItem
+	for i := 0; i < 20; i++ {
+		item := copyLinkedList.InitLinkedItem([]byte{byte(i)}, lastLink)
+		lastLink = item
+	}
 }
