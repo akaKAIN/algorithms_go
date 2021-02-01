@@ -43,3 +43,7 @@ func Shaker(arr []byte) []byte {
 		}
 	}
 }
+
+func IsValidParentheses(expresion string) {
+
+}
