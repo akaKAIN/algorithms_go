@@ -5,9 +5,15 @@ type LinkedItem struct {
 	NextItem *LinkedItem
 }
 
+func (l *LinkedItem) GetCopy() LinkedItem {
+	return *l
+}
+
 func InitLinkedItem(data []byte, link *LinkedItem) *LinkedItem {
 	li := new(LinkedItem)
 	li.Data = data
 	li.NextItem = link
 	return li
 }
+
+

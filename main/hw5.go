@@ -15,8 +15,8 @@ func main() {
 	//Task1()
 	//Task2()
 	//Task3()
-	//Task4()
-	Task6()
+	Task4()
+	//Task6()
 }
 
 // Реализовать перевод издесятичной в двоичную систему
@@ -58,11 +58,21 @@ func Task3() {
 // Создать функцию, копирующую односвязный список (то есть создает в памяти копию
 // односвязного списка, не удаляя первый список).
 func Task4() {
-	var lastLink *copyLinkedList.LinkedItem
+	var (
+		lastLink *copyLinkedList.LinkedItem
+		list, copyList []copyLinkedList.LinkedItem
+	)
+	// Создаем список для копирования
 	for i := 0; i < 20; i++ {
 		item := copyLinkedList.InitLinkedItem([]byte{byte(i)}, lastLink)
 		lastLink = item
+		list = append(list, *item)
 	}
+	fmt.Println(list)
+	for _, item := range list {
+		copyList = append(copyList, item.GetCopy())
+	}
+	fmt.Println(copyList)
 }
 
 // **Реализовать алгоритм перевода из инфиксной записи арифметического выражения в постфиксную.
