@@ -1,6 +1,7 @@
 package mymath
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -90,5 +91,24 @@ func TestWayCounter(t *testing.T) {
 	for _, tc := range tests {
 		result := WayCounterRecursive(tc.start, tc.limit)
 		assert.Equal(t, tc.out, result, "Must be equal")
+	}
+}
+
+func TestToBinaryStack(t *testing.T) {
+	tests := []struct {
+		in  int
+		out []int
+	}{
+		{in: 0, out: []int{0}},
+		{in: 1, out: []int{1}},
+		{in: 2, out: []int{0, 1}},
+		{in: 3, out: []int{1, 1}},
+		{in: 4, out: []int{0, 0, 1}},
+		{in: 5, out: []int{1, 0, 1}},
+	}
+
+	for _, tc := range tests {
+		result := ToBinaryStack(tc.in)
+		assert.Equal(t, tc.out, result, fmt.Sprintf("For %d", tc.in))
 	}
 }

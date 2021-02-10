@@ -7,6 +7,24 @@ func ToBinary(num int) int {
 	return num%2 + 10*ToBinary(num/2)
 }
 
+// Возвращает стек значений представления числа в бинарной системе
+func ToBinaryStack(num int) []int {
+	var arr = make([]int, 0)
+	if num == 0 {
+		return make([]int, 1)
+	}
+
+	for {
+		if num == 0 {
+			break
+		}
+		rest := num % 2
+		num /= 2
+		arr = append(arr, rest)
+	}
+	return arr
+}
+
 func PowRecursive(num, pow int) int {
 	if pow == 0 {
 		return 1
