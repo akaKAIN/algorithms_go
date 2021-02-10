@@ -15,5 +15,3 @@ func InitLinkedItem(data []byte, link *LinkedItem) *LinkedItem {
 	li.NextItem = link
 	return li
 }
-
-

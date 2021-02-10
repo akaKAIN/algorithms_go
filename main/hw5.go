@@ -59,7 +59,7 @@ func Task3() {
 // односвязного списка, не удаляя первый список).
 func Task4() {
 	var (
-		lastLink *copyLinkedList.LinkedItem
+		lastLink       *copyLinkedList.LinkedItem
 		list, copyList []copyLinkedList.LinkedItem
 	)
 	// Создаем список для копирования
