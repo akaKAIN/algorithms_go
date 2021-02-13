@@ -26,7 +26,7 @@ func GenerateGraphFromMatrix(matrix [][]int) *Graph {
 		vertex.Connections = connections
 		g.Vertices = append(g.Vertices, vertex)
 		g.Queue = make([]VertexName, 0)
-		g.VertexMap = make(map[*Vertex]int)
+		g.VertexMap = make(map[VertexName]int)
 	}
 	return &g
 }

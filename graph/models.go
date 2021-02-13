@@ -25,13 +25,13 @@ type Vertex struct {
 }
 
 func (v Vertex) String() string {
-	return fmt.Sprintf("<%s>-соеденена: %v", v.Name, v.Connections)
+	return fmt.Sprintf("<%s> min: %d, соеденена: %v", v.Name, v.MinValue, v.Connections)
 }
 
 // Граф состоящий из списка вершин и ребер (связей)
 type Graph struct {
 	Vertices []Vertex
-	VertexMap map[*Vertex]int
+	VertexMap map[VertexName]int
 	ShortWay []Vertex
 	Queue []VertexName
 }
@@ -51,18 +51,18 @@ func (g *Graph) getMaxValue() int {
 func (g *Graph) FillMap() {
 	max := g.getMaxValue() + 1
 	for _, vertex := range g.Vertices {
-		g.VertexMap[&vertex] = max
+		g.VertexMap[vertex.Name] = max
 	}
 }
 
 // Получение структуры вершины из графа по значению имени
-func (g *Graph) GetVertexByName(name VertexName) (Vertex, error) {
+func (g *Graph) GetVertexByName(name VertexName) (*Vertex, error) {
 	for i := range g.Vertices {
 		if name == g.Vertices[i].Name {
-			return g.Vertices[i], nil
+			return &g.Vertices[i], nil
 		}
 	}
-	return Vertex{}, fmt.Errorf("Not found vertex by nama\n")
+	return nil, fmt.Errorf("Not found vertex by nama\n")
 }
 
 // Добавление имени вершины в очередь на обработку
@@ -80,14 +80,12 @@ func (g *Graph) deleteFromQueue() (VertexName, error) {
 	return "", fmt.Errorf("Queue is empty: nothig to delete\n")
 }
 
-func (g *Graph) SearchFrom(start VertexName) {
-	startVertex, err := g.GetVertexByName(start)
-	if err != nil {
-		log.Fatal("Wrong start vertex name")
-	}
-	g.VertexMap[&startVertex] = 0
+func (g *Graph) SearchFromTo(start, end VertexName) {
+	g.FillMap()
+	g.VertexMap[start] = 0
 	g.addToQueue(start)
 	g.queueSearch()
+	g.MinWayTo(end)
 }
 
 // Перебор вершин в очереди графа по алгоритму Дейкстры (без возврата)
@@ -108,14 +106,45 @@ func (g *Graph) queueSearch() {
 			if err != nil {
 				return
 			}
-			newValue := g.VertexMap[&vertex] + bridge.Value
-			if newValue < g.VertexMap[&bridgeVertex] {
+			newValue := g.VertexMap[vertexName] + bridge.Value
+			if newValue < g.VertexMap[bridgeVertex.Name] {
 				g.addToQueue(bridgeVertex.Name)
-				g.VertexMap[&bridgeVertex] = newValue
+				g.VertexMap[bridgeVertex.Name] = newValue
+				bridgeVertex.MinValue = newValue
+				log.Println(bridgeVertex)
 			}
 		}
 	}
 	log.Println("Way was build")
+}
+
+func (g *Graph) MinWayTo(end VertexName) {
+	if endValue, ok := g.VertexMap[end]; ok {
+		if endValue == 0 {
+			return
+		}
+
+		endVertex, err := g.GetVertexByName(end)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		if len(g.ShortWay) == 0 {
+			g.ShortWay = append(g.ShortWay, *endVertex)
+		}
+		for _, bridge := range endVertex.Connections {
+			bridgeVertex, err := g.GetVertexByName(bridge.Target)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if bridgeVertex.MinValue == endVertex.MinValue - bridge.Value {
+				g.ShortWay = append(g.ShortWay, *bridgeVertex)
+				g.MinWayTo(bridgeVertex.Name)
+			}
+		}
+	}
+
 }
 
 // Формат вывода графа.
@@ -125,4 +154,12 @@ func (g Graph) String() string {
 		result += fmt.Sprintf("%v\n", vertex)
 	}
 	return result
+}
+
+func (g *Graph) GetShortWayNames() []string {
+	way := make([]string, 0)
+	for i := range g.ShortWay {
+		way = append(way, g.ShortWay[i].Name)
+	}
+	return way
 }

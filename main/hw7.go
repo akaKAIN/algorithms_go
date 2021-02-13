@@ -5,6 +5,7 @@ import (
 	"github.com/akaKAIN/algorithms_go/graph"
 	"github.com/akaKAIN/algorithms_go/input"
 	"log"
+	"sort"
 )
 
 func main() {
@@ -15,9 +16,8 @@ func main() {
 		log.Println(err)
 	}
 	g := graph.GenerateGraphFromMatrix(matrix)
-	fmt.Println(g)
-	g.SearchFrom("V0")
-	for val := range g.VertexMap {
-		fmt.Println("::", val)
-	}
+	g.SearchFromTo("V0", "V4")
+	shortWay := g.GetShortWayNames()
+	sort.Strings(shortWay)
+	fmt.Println(shortWay)
 }
