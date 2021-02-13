@@ -5,7 +5,7 @@ import "fmt"
 func GenerateGraphFromMatrix(matrix [][]int) *Graph {
 	g := Graph{}
 	for i, row := range matrix {
-		name := fmt.Sprintf("V:%d", i)
+		name := fmt.Sprintf("V%d", i)
 		connections := make([]Bridge, 0)
 		vertex := Vertex{
 			Name:        name,
@@ -16,7 +16,7 @@ func GenerateGraphFromMatrix(matrix [][]int) *Graph {
 			if val == 0 {
 				continue
 			}
-			name := fmt.Sprintf("V:%d", j)
+			name := fmt.Sprintf("V%d", j)
 			bridge := Bridge{
 				Value:  val,
 				Target: name,
@@ -25,6 +25,8 @@ func GenerateGraphFromMatrix(matrix [][]int) *Graph {
 		}
 		vertex.Connections = connections
 		g.Vertices = append(g.Vertices, vertex)
+		g.Queue = make([]VertexName, 0)
+		g.VertexMap = make(map[*Vertex]int)
 	}
 	return &g
 }

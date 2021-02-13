@@ -16,4 +16,8 @@ func main() {
 	}
 	g := graph.GenerateGraphFromMatrix(matrix)
 	fmt.Println(g)
+	g.SearchFrom("V0")
+	for val := range g.VertexMap {
+		fmt.Println("::", val)
+	}
 }
