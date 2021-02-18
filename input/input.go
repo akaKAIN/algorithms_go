@@ -36,3 +36,28 @@ func UserFile(path string) (string, error) {
 
 	return UserString(file), nil
 }
+
+func UserFileWithMatrix(path string) ([][]int, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	clearMatrix := make([][]int, 0)
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		textArr := strings.Split(scanner.Text(), " ")
+		intArr := make([]int, len(textArr))
+		for i, s := range textArr {
+			num, err := strconv.Atoi(s)
+			if err != nil {
+				return nil, err
+			}
+			intArr[i] = num
+		}
+		clearMatrix = append(clearMatrix, intArr)
+	}
+	return clearMatrix, nil
+}

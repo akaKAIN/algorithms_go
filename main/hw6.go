@@ -24,7 +24,7 @@ func HomeWork6Task1() {
 
 // Переписать программу, реализующую двоичное дерево поиска.
 func HomeWork6Task2() {
-	func(){
+	func() {
 		defer func() {
 			if r := recover(); r != nil {
 				log.Println("No match")
